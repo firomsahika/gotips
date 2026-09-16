@@ -1,0 +1,9 @@
+{
+  "cli": { "version": ">= 10.0.0" },
+  "build": {
+    "development": { "developmentClient": true, "distribution": "internal", "env": { "EXPO_PUBLIC_ADS_MODE": "test" } },
+    "preview": { "distribution": "internal", "env": { "EXPO_PUBLIC_ADS_MODE": "test" } },
+    "production": { "autoIncrement": true, "env": { "EXPO_PUBLIC_ADS_MODE": "production" } }
+  },
+  "submit": { "production": { "android": { "track": "internal" }, "ios": {} } }
+}
