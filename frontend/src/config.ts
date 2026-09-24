@@ -6,7 +6,7 @@ const requiredProductionId = (name: string) => {
 };
 
 export const config = {
-  apiUrl: process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://10.0.2.2:4000/api/v1",
+  apiUrl: process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://10.0.2.2:5000/api/v1",
   interstitialFrequency: 5,
   ads: {
     bannerId: production

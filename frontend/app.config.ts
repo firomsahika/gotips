@@ -40,7 +40,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-build-properties",
       {
-        android: { compileSdkVersion: 36, targetSdkVersion: 36 },
+        android: {
+          compileSdkVersion: 36,
+          targetSdkVersion: 36,
+          kotlinVersion: "1.9.25",
+        },
         ios: { deploymentTarget: "15.1" },
       },
     ],
@@ -59,5 +63,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ],
   ],
   experiments: { typedRoutes: true },
-  extra: { eas: { projectId: process.env.EAS_PROJECT_ID } },
+  extra: {
+    eas: { projectId: "1271aeae-d0bd-4d3d-8d60-d90967724734" },
+  },
 });

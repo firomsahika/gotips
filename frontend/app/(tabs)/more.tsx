@@ -1,85 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { openPrivacyChoices } from "../../src/ads/consent";
+import { ScreenHero } from "../../src/components/ScreenHero";
 import { theme } from "../../src/theme";
-
-const rows: Array<[string, string, () => void]> = [
-  ["bookmarks-outline", "Saved tips",
-     () => router.push("/(tabs)/favorites")],
-  [
-    "information-circle-outline",
-    "About GoTips",
-    () => router.push("/legal/about"),
-  ],
-  [
-    "shield-checkmark-outline",
-    "Privacy policy",
-    () => router.push("/legal/privacy"),
-  ],
-  ["document-text-outline", "Terms of use", () => router.push("/legal/terms")],
-  ["options-outline", "Privacy choices", () => openPrivacyChoices()],
-];
-export default function More() {
-  return (
-    <View style={s.page}>
-      <View style={s.hero}>
-        <View style={s.mark}>
-          <Ionicons name="sparkles" size={26} color="white" />
-        </View>
-        <Text style={s.title}>GoTips</Text>
-        <Text style={s.copy}>Small ideas. Meaningful momentum.</Text>
-      </View>
-      {rows.map(([icon, label, onPress]) => (
-        <Pressable
-          key={label as string}
-          style={s.row}
-          onPress={onPress as () => void}
-        >
-          <Ionicons name={icon as any} size={22} color={theme.colors.ink} />
-          <Text style={s.label}>{label}</Text>
-          <Ionicons
-            name="chevron-forward"
-            size={18}
-            color={theme.colors.muted}
-          />
-        </Pressable>
-      ))}
-      <Text style={s.version}>Version 1.0.0</Text>
-    </View>
-  );
-}
-const s = StyleSheet.create({
-  page: { padding: 20, paddingTop: 50 },
-  hero: { paddingBottom: 28 },
-  mark: {
-    width: 52,
-    height: 52,
-    borderRadius: 17,
-    backgroundColor: theme.colors.brand,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "900",
-    color: theme.colors.ink,
-    marginTop: 15,
-  },
-  copy: { color: theme.colors.muted, marginTop: 4 },
-  row: {
-    height: 62,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-    borderBottomWidth: 1,
-    borderColor: theme.colors.line,
-  },
-  label: { fontSize: 16, fontWeight: "700", flex: 1, color: theme.colors.ink },
-  version: {
-    textAlign: "center",
-    color: theme.colors.muted,
-    fontSize: 12,
-    marginTop: 28,
-  },
-});
+const rows: Array<[keyof typeof Ionicons.glyphMap, string, string, () => void]> = [["bookmark-outline", "Saved tips", "Your personal knowledge shelf", () => router.push("/(tabs)/favorites")], ["information-circle-outline", "About GoTips", "How the app works", () => router.push("/legal/about")], ["shield-checkmark-outline", "Privacy policy", "How we handle your data", () => router.push("/legal/privacy")], ["document-text-outline", "Terms of use", "The rules for using GoTips", () => router.push("/legal/terms")], ["options-outline", "Privacy choices", "Manage ad privacy options", () => openPrivacyChoices()]];
+export default function More() { return <SafeAreaView edges={["top"]} style={s.safe}><StatusBar style="light" backgroundColor={theme.colors.brandDark} translucent={false} /><ScrollView contentContainerStyle={s.page} showsVerticalScrollIndicator={false}><ScreenHero eyebrow="GO TIPS" title="More, your way" subtitle="A few essentials to make GoTips work for you." icon="sparkles" /><Text style={s.label}>APP SETTINGS</Text><View style={s.list}>{rows.map(([icon, title, description, onPress]) => <Pressable key={title} style={s.row} onPress={onPress}><View style={s.rowIcon}><Ionicons name={icon} size={21} color={theme.colors.brand} /></View><View style={s.rowCopy}><Text style={s.rowTitle}>{title}</Text><Text style={s.rowDesc}>{description}</Text></View><Ionicons name="chevron-forward" size={18} color={theme.colors.muted} /></Pressable>)}</View><Text style={s.version}>GoTips · Version 1.0.0</Text></ScrollView></SafeAreaView>; }
+const s = StyleSheet.create({ safe: { flex: 1, backgroundColor: theme.colors.brandDark }, page: { backgroundColor: theme.colors.canvas, paddingBottom: 32 }, label: { color: theme.colors.muted, fontFamily: theme.fonts.semiBold, fontSize: 11, letterSpacing: 1.1, marginHorizontal: 20, marginTop: 25, marginBottom: 12 }, list: { backgroundColor: theme.colors.surface, marginHorizontal: 20, borderRadius: 22, paddingHorizontal: 15, shadowColor: "#0D1D33", shadowOpacity: 0.04, shadowRadius: 12, shadowOffset: { width: 0, height: 4 }, elevation: 2 }, row: { minHeight: 78, flexDirection: "row", alignItems: "center", borderBottomWidth: 1, borderColor: theme.colors.line }, rowIcon: { height: 42, width: 42, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: theme.colors.sky, marginRight: 13 }, rowCopy: { flex: 1 }, rowTitle: { color: theme.colors.ink, fontFamily: theme.fonts.semiBold, fontSize: 15 }, rowDesc: { color: theme.colors.muted, fontSize: 12, marginTop: 2 }, version: { textAlign: "center", color: theme.colors.muted, fontSize: 12, marginTop: 27 } });
