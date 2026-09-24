@@ -26,7 +26,13 @@ export function TipCard({
   };
 
   return (
-    <Animated.View style={[styles.cardWrap, { transform: [{ scale }] }, compact && styles.compactWrap]}>
+    <Animated.View
+      style={[
+        styles.cardWrap,
+        compact && styles.compactWrap,
+        { transform: [{ scale }] },
+      ]}
+    >
       <Pressable
         style={[styles.card, compact && styles.compact]}
         onPressIn={() => animatePress(0.98)}
@@ -44,6 +50,7 @@ export function TipCard({
           <Text style={styles.excerpt} numberOfLines={compact ? 2 : 2}>
             {tip.excerpt}
           </Text>
+
           <View style={styles.meta}>
             <Ionicons name="time-outline" size={14} color={theme.colors.muted} />
             <Text style={styles.date}>
@@ -54,6 +61,7 @@ export function TipCard({
             </Text>
           </View>
         </View>
+
         {tip.coverImageUrl ? (
           <Image source={{ uri: tip.coverImageUrl }} style={styles.image} />
         ) : (
@@ -68,35 +76,43 @@ export function TipCard({
 
 const styles = StyleSheet.create({
   cardWrap: {
-    borderRadius: 22,
+    marginHorizontal: 18,
+    marginVertical: 10,
+    borderRadius: 24,
   },
   compactWrap: {
-    marginRight: 8,
+    marginRight: 10,
+    marginLeft: 0,
+    marginVertical: 8,
   },
   card: {
     flexDirection: "row",
-    gap: 12,
-    paddingHorizontal: 18,
-    paddingVertical: 17,
-    borderRadius: 22,
+    alignItems: "center",
+    gap: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: 24,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.18)",
-    backgroundColor: "rgba(255,255,255,0.9)",
+    borderColor: "#E7EDF8",
+    backgroundColor: "#FFFFFF",
     ...theme.shadow.soft,
-    marginHorizontal: 0,
   },
   compact: {
-    width: 250,
-    padding: 16,
-    backgroundColor: theme.colors.surface,
+    width: 268,
+    padding: 14,
     borderRadius: 22,
   },
-  copy: { flex: 1 },
+  copy: {
+    flex: 1,
+    justifyContent: "center",
+  },
   category: {
     color: theme.colors.brand,
     fontFamily: theme.fonts.semiBold,
-    fontSize: 12,
-    marginBottom: 5,
+    fontSize: 11,
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+    marginBottom: 6,
   },
   title: {
     fontSize: 18,
@@ -105,24 +121,33 @@ const styles = StyleSheet.create({
     color: theme.colors.ink,
   },
   excerpt: {
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 19,
     color: theme.colors.muted,
-    marginTop: 5,
+    marginTop: 6,
   },
-  meta: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: 10 },
-  date: { color: theme.colors.muted, fontSize: 12 },
+  meta: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 10,
+  },
+  date: {
+    color: theme.colors.muted,
+    fontSize: 12,
+    fontFamily: theme.fonts.medium,
+  },
   image: {
-    width: 98,
-    height: 98,
+    width: 94,
+    height: 94,
     borderRadius: 18,
     backgroundColor: theme.colors.sky,
     borderWidth: 1,
     borderColor: "rgba(36,107,222,0.08)",
   },
   fallback: {
-    width: 98,
-    height: 98,
+    width: 94,
+    height: 94,
     borderRadius: 18,
     backgroundColor: theme.colors.sky,
     alignItems: "center",

@@ -34,13 +34,14 @@ export function ScreenHero({
 
 const styles = StyleSheet.create({
   wrap: {
+    width: "100%",
     paddingHorizontal: 20,
     paddingVertical: 23,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
     backgroundColor: "#0F234E",
     overflow: "hidden",
     position: "relative",
@@ -52,8 +53,8 @@ const styles = StyleSheet.create({
   },
   overlayTwo: {
     position: "absolute",
-    left: -40,
-    right: -40,
+    left: -60,
+    right: -60,
     top: -60,
     bottom: -20,
     backgroundColor: "#4C7BFF",

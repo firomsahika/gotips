@@ -37,4 +37,4 @@ app.use(
   },
 );
 const port = Number(process.env.PORT ?? 5000);
-app.listen(port, () => console.log(`GoTips API listening on ${port}`));
+app.listen(port, "0.0.0.0", () => console.log(`GoTips API listening on ${port}`));

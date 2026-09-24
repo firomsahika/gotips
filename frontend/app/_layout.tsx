@@ -1,11 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+  useFonts,
+} from "@expo-google-fonts/poppins";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
-import { useFonts } from "expo-font";
 import { FavoritesProvider } from "../src/favorites";
 import { AdsProvider } from "../src/ads/AdsProvider";
 import { theme } from "../src/theme";
@@ -29,10 +35,10 @@ function AppLoader() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    Poppins_400Regular: require("../assets/fonts/Poppins-Regular.ttf"),
-    Poppins_500Medium: require("../assets/fonts/Poppins-Medium.ttf"),
-    Poppins_600SemiBold: require("../assets/fonts/Poppins-SemiBold.ttf"),
-    Poppins_700Bold: require("../assets/fonts/Poppins-Bold.ttf"),
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
   });
   const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
 
@@ -41,6 +47,9 @@ export default function RootLayout() {
       .then((value) => setShowOnboarding(value !== "true"))
       .catch(() => setShowOnboarding(true));
   }, []);
+
+  const textFontFamily = fontsLoaded ? theme.fonts.regular : "System";
+  const inputFontFamily = fontsLoaded ? theme.fonts.regular : "System";
 
   if (!fontsLoaded && !fontError) {
     return <AppLoader />;
@@ -52,11 +61,11 @@ export default function RootLayout() {
 
   (Text as any).defaultProps = {
     ...((Text as any).defaultProps ?? {}),
-    style: [{ fontFamily: theme.fonts.regular }, (Text as any).defaultProps?.style],
+    style: [{ fontFamily: textFontFamily }, (Text as any).defaultProps?.style],
   };
   (TextInput as any).defaultProps = {
     ...((TextInput as any).defaultProps ?? {}),
-    style: [{ fontFamily: theme.fonts.regular }, (TextInput as any).defaultProps?.style],
+    style: [{ fontFamily: inputFontFamily }, (TextInput as any).defaultProps?.style],
   };
 
   return (
@@ -65,9 +74,9 @@ export default function RootLayout() {
         <FavoritesProvider>
           <AdsProvider>
             <StatusBar
-              style="dark"
+              style="light"
               translucent={false}
-              backgroundColor={theme.colors.surface}
+              backgroundColor={theme.colors.brandDark}
             />
             <Stack
               initialRouteName={showOnboarding ? "onboarding" : "(tabs)"}
@@ -82,7 +91,7 @@ export default function RootLayout() {
                   color: theme.colors.ink,
                 },
                 contentStyle: {
-                  backgroundColor: showOnboarding ? theme.colors.dark.base : theme.colors.canvas,
+                  backgroundColor: theme.colors.canvas,
                 },
                 headerShadowVisible: true,
               }}
