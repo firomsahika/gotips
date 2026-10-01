@@ -38,6 +38,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     [
+      "expo-font",
+      {
+        fonts: [
+          "./assets/fonts/Poppins_400Regular.ttf",
+          "./assets/fonts/Poppins_500Medium.ttf",
+          "./assets/fonts/Poppins_600SemiBold.ttf",
+          "./assets/fonts/Poppins_700Bold.ttf",
+          "./assets/fonts/Ionicons.ttf",
+        ],
+      },
+    ],
+    [
       "expo-build-properties",
       {
         android: {

@@ -4,8 +4,9 @@ import {
   Poppins_500Medium,
   Poppins_600SemiBold,
   Poppins_700Bold,
-  useFonts,
 } from "@expo-google-fonts/poppins";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useFonts } from "expo-font";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -39,8 +40,19 @@ export default function RootLayout() {
     Poppins_500Medium,
     Poppins_600SemiBold,
     Poppins_700Bold,
+    "Poppins-Regular": Poppins_400Regular,
+    "Poppins-Medium": Poppins_500Medium,
+    "Poppins-SemiBold": Poppins_600SemiBold,
+    "Poppins-Bold": Poppins_700Bold,
+    ...Ionicons.font,
   });
   const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (fontError) {
+      console.warn("Font loading error:", fontError);
+    }
+  }, [fontError]);
 
   useEffect(() => {
     AsyncStorage.getItem("gotips.onboardingSeen")
@@ -59,6 +71,7 @@ export default function RootLayout() {
     return <AppLoader />;
   }
 
+  // Safe global default font handling across web and modern React Native
   (Text as any).defaultProps = {
     ...((Text as any).defaultProps ?? {}),
     style: [{ fontFamily: textFontFamily }, (Text as any).defaultProps?.style],
@@ -67,6 +80,44 @@ export default function RootLayout() {
     ...((TextInput as any).defaultProps ?? {}),
     style: [{ fontFamily: inputFontFamily }, (TextInput as any).defaultProps?.style],
   };
+
+  if (typeof (Text as any).render === "function" && !(Text as any).__gotipsFontPatched) {
+    (Text as any).__gotipsFontPatched = true;
+    const origRender = (Text as any).render;
+    (Text as any).render = function (props: any, ref: any) {
+      const flattened = StyleSheet.flatten(props?.style);
+      if (!flattened?.fontFamily) {
+        return origRender.call(
+          this,
+          {
+            ...props,
+            style: [{ fontFamily: textFontFamily }, props?.style],
+          },
+          ref
+        );
+      }
+      return origRender.call(this, props, ref);
+    };
+  }
+
+  if (typeof (TextInput as any).render === "function" && !(TextInput as any).__gotipsFontPatched) {
+    (TextInput as any).__gotipsFontPatched = true;
+    const origInputRender = (TextInput as any).render;
+    (TextInput as any).render = function (props: any, ref: any) {
+      const flattened = StyleSheet.flatten(props?.style);
+      if (!flattened?.fontFamily) {
+        return origInputRender.call(
+          this,
+          {
+            ...props,
+            style: [{ fontFamily: inputFontFamily }, props?.style],
+          },
+          ref
+        );
+      }
+      return origInputRender.call(this, props, ref);
+    };
+  }
 
   return (
     <SafeAreaProvider>
@@ -86,7 +137,7 @@ export default function RootLayout() {
                 },
                 headerTintColor: theme.colors.ink,
                 headerTitleStyle: {
-                  fontWeight: "800",
+                  fontFamily: theme.fonts.bold,
                   fontSize: 18,
                   color: theme.colors.ink,
                 },

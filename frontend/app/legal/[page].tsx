@@ -29,12 +29,13 @@ const s = StyleSheet.create({
   page: { padding: 22 },
   title: {
     fontSize: 29,
-    fontWeight: "900",
+    fontFamily: theme.fonts.bold,
     color: theme.colors.ink,
     marginTop: 8,
   },
   body: {
     fontSize: 16,
+    fontFamily: theme.fonts.regular,
     lineHeight: 25,
     color: theme.colors.ink,
     marginTop: 20,

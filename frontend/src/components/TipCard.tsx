@@ -1,8 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 import { Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useRef } from "react";
 import { useShowInterstitial } from "../ads/AdsProvider";
+import { useFavorites } from "../favorites";
 import { theme } from "../theme";
 import type { Tip } from "../types";
 
@@ -14,16 +16,26 @@ export function TipCard({
   compact?: boolean;
 }) {
   const showInterstitial = useShowInterstitial();
+  const { ids, toggle } = useFavorites();
   const scale = useRef(new Animated.Value(1)).current;
+  const isSaved = ids.includes(tip.id);
 
   const animatePress = (to: number) => {
     Animated.spring(scale, {
       toValue: to,
       friction: 6,
-      tension: 120,
+      tension: 140,
       useNativeDriver: true,
     }).start();
   };
+
+  const handleFavorite = (e: any) => {
+    e.stopPropagation();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    toggle(tip.id);
+  };
+
+  const readTime = tip.readTimeMinutes ?? 2;
 
   return (
     <Animated.View
@@ -43,22 +55,44 @@ export function TipCard({
         }}
       >
         <View style={styles.copy}>
-          <Text style={styles.category}>{tip.category.name}</Text>
-          <Text style={styles.title} numberOfLines={compact ? 3 : 2}>
+          <View style={styles.topRow}>
+            <View style={styles.catBadge}>
+              <Text style={styles.catText}>
+                {tip.category.icon ? `${tip.category.icon} ` : ""}
+                {tip.category.name}
+              </Text>
+            </View>
+            <View style={styles.readTimeBadge}>
+              <Ionicons name="flash" size={10} color={theme.colors.mango} />
+              <Text style={styles.readTimeText}>{readTime}m read</Text>
+            </View>
+          </View>
+
+          <Text style={styles.title} numberOfLines={compact ? 2 : 2}>
             {tip.title}
           </Text>
+
           <Text style={styles.excerpt} numberOfLines={compact ? 2 : 2}>
             {tip.excerpt}
           </Text>
 
-          <View style={styles.meta}>
-            <Ionicons name="time-outline" size={14} color={theme.colors.muted} />
-            <Text style={styles.date}>
-              {new Date(tip.publishedAt).toLocaleDateString(undefined, {
-                month: "short",
-                day: "numeric",
-              })}
-            </Text>
+          <View style={styles.footRow}>
+            <View style={styles.metaItem}>
+              <Ionicons name="eye-outline" size={12} color={theme.colors.muted} />
+              <Text style={styles.metaText}>{tip.viewCount.toLocaleString()}</Text>
+            </View>
+
+            <Pressable
+              hitSlop={8}
+              onPress={handleFavorite}
+              style={[styles.favButton, isSaved && styles.favButtonActive]}
+            >
+              <Ionicons
+                name={isSaved ? "heart" : "heart-outline"}
+                size={16}
+                color={isSaved ? theme.colors.danger : theme.colors.muted}
+              />
+            </Pressable>
           </View>
         </View>
 
@@ -66,7 +100,7 @@ export function TipCard({
           <Image source={{ uri: tip.coverImageUrl }} style={styles.image} />
         ) : (
           <View style={styles.fallback}>
-            <Ionicons name="bulb-outline" size={28} color={theme.colors.brand} />
+            <Text style={styles.fallbackIcon}>{tip.category.icon || "💡"}</Text>
           </View>
         )}
       </Pressable>
@@ -77,82 +111,126 @@ export function TipCard({
 const styles = StyleSheet.create({
   cardWrap: {
     marginHorizontal: 18,
-    marginVertical: 10,
-    borderRadius: 24,
+    marginVertical: 7,
+    borderRadius: 22,
   },
   compactWrap: {
-    marginRight: 10,
+    marginRight: 12,
     marginLeft: 0,
-    marginVertical: 8,
+    marginVertical: 4,
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
     gap: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderRadius: 24,
+    padding: 16,
+    borderRadius: 22,
     borderWidth: 1,
-    borderColor: "#E7EDF8",
+    borderColor: "#E2E8F0",
     backgroundColor: "#FFFFFF",
-    ...theme.shadow.soft,
+    ...theme.shadow.card,
   },
   compact: {
-    width: 268,
-    padding: 14,
-    borderRadius: 22,
+    width: 275,
+    padding: 15,
   },
   copy: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
-  category: {
-    color: theme.colors.brand,
-    fontFamily: theme.fonts.semiBold,
-    fontSize: 11,
-    letterSpacing: 0.8,
-    textTransform: "uppercase",
+  topRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 6,
   },
+  catBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    backgroundColor: theme.colors.brandSoft,
+    borderRadius: 8,
+  },
+  catText: {
+    color: theme.colors.brand,
+    fontFamily: theme.fonts.bold,
+    fontSize: 10,
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
+  },
+  readTimeBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    backgroundColor: theme.colors.mangoSoft,
+    borderRadius: 6,
+  },
+  readTimeText: {
+    fontSize: 10,
+    fontFamily: theme.fonts.semiBold,
+    color: theme.colors.gold,
+  },
   title: {
-    fontSize: 18,
-    lineHeight: 24,
+    fontSize: 16,
+    lineHeight: 22,
     fontFamily: theme.fonts.bold,
     color: theme.colors.ink,
   },
   excerpt: {
-    fontSize: 13,
-    lineHeight: 19,
+    fontSize: 12,
+    lineHeight: 18,
     color: theme.colors.muted,
-    marginTop: 6,
+    marginTop: 5,
   },
-  meta: {
+  footRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
+    justifyContent: "space-between",
     marginTop: 10,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.lineLight,
   },
-  date: {
-    color: theme.colors.muted,
-    fontSize: 12,
+  metaItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  metaText: {
+    fontSize: 11,
     fontFamily: theme.fonts.medium,
+    color: theme.colors.muted,
+  },
+  favButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: theme.colors.surfaceSoft,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  favButtonActive: {
+    backgroundColor: theme.colors.dangerSoft,
   },
   image: {
-    width: 94,
-    height: 94,
-    borderRadius: 18,
+    width: 88,
+    height: 88,
+    borderRadius: 16,
     backgroundColor: theme.colors.sky,
-    borderWidth: 1,
-    borderColor: "rgba(36,107,222,0.08)",
   },
   fallback: {
-    width: 94,
-    height: 94,
-    borderRadius: 18,
-    backgroundColor: theme.colors.sky,
+    width: 88,
+    height: 88,
+    borderRadius: 16,
+    backgroundColor: theme.colors.surfaceSoft,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "rgba(36,107,222,0.08)",
+    borderColor: "#E2E8F0",
+  },
+  fallbackIcon: {
+    fontSize: 32,
   },
 });
+
