@@ -1,3 +1,3 @@
 export function useInterstitialController(_adsReady: boolean) {
-  return { showInterstitial: () => undefined };
+  return { showInterstitial: (_force?: boolean) => undefined };
 }

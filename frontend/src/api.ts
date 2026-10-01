@@ -18,4 +18,19 @@ export const api = {
   tip: (id: string) => get<Tip>(`/tips/${id}`),
   related: (id: string) => get<Tip[]>(`/tips/${id}/related`),
   search: (q: string) => get<Tip[]>(`/tips/search?q=${encodeURIComponent(q)}`),
+  react: async (id: string, type: "helpful" | "insightful" | "practical" = "helpful"): Promise<Tip> => {
+    try {
+      const response = await fetch(`${config.apiUrl}/tips/${id}/react`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type }),
+      });
+      if (!response.ok) return await api.tip(id);
+      const data = ((await response.json()) as Envelope<Tip>).data;
+      return data;
+    } catch {
+      return await api.tip(id);
+    }
+  },
 };
+

@@ -7,18 +7,29 @@ import { config } from "../../config";
 import { theme } from "../../theme";
 import { useAdsReady } from "../../ads/AdsProvider";
 
-/** An editorially separate, clearly labelled placement. Never position beside actions. */
-export function BannerAd() {
+export function BannerAd({
+  size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER,
+  inline = false,
+}: {
+  size?: BannerAdSize;
+  inline?: boolean;
+}) {
   const ready = useAdsReady();
   if (!ready) return null;
+
   return (
-    <View style={styles.wrap}>
-      <Text style={styles.label}>ADVERTISEMENT</Text>
-      <NativeBannerAd
-        unitId={config.ads.bannerId}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        requestOptions={{ requestNonPersonalizedAdsOnly: true }}
-      />
+    <View style={[styles.wrap, inline && styles.inlineWrap]}>
+      <View style={styles.badgeRow}>
+        <View style={styles.adDot} />
+        <Text style={styles.label}>SPONSORED</Text>
+      </View>
+      <View style={styles.adFrame}>
+        <NativeBannerAd
+          unitId={config.ads.bannerId}
+          size={size}
+          requestOptions={{ requestNonPersonalizedAdsOnly: true }}
+        />
+      </View>
     </View>
   );
 }
@@ -26,16 +37,48 @@ export function BannerAd() {
 const styles = StyleSheet.create({
   wrap: {
     alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 14,
+    marginHorizontal: 18,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    backgroundColor: "#F8FAFC",
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...theme.shadow.soft,
+  },
+  inlineWrap: {
+    marginHorizontal: 0,
     marginVertical: 12,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: theme.colors.line,
-    paddingVertical: 8,
+  },
+  badgeRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
+    marginBottom: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+    backgroundColor: "rgba(100, 116, 139, 0.08)",
+    gap: 5,
+  },
+  adDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: theme.colors.muted,
   },
   label: {
-    fontSize: 10,
-    letterSpacing: 1.4,
+    fontSize: 9,
+    fontFamily: theme.fonts.bold,
+    letterSpacing: 1.1,
     color: theme.colors.muted,
-    marginBottom: 5,
+  },
+  adFrame: {
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    borderRadius: 12,
   },
 });

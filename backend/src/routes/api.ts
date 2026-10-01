@@ -49,3 +49,17 @@ api.get("/tips/:id", async (req, res, next) => {
     next(e);
   }
 });
+
+api.post("/tips/:id/react", async (req, res, next) => {
+  try {
+    const bodySchema = z.object({
+      type: z.enum(["helpful", "insightful", "practical"]).default("helpful"),
+    });
+    const parsed = bodySchema.parse(req.body || {});
+    const tip = await tips.react(req.params.id, parsed.type);
+    tip ? ok(res, tip) : fail(res, 404, "Tip not found");
+  } catch (e) {
+    next(e);
+  }
+});
+

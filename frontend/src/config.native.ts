@@ -10,7 +10,7 @@ const requiredProductionId = (name: string) => {
 
 export const config = {
   apiUrl: process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://10.0.2.2:5000/api/v1",
-  interstitialFrequency: 5,
+  interstitialFrequency: 3,
   ads: {
     bannerId: production
       ? requiredProductionId("EXPO_PUBLIC_ADMOB_BANNER_ID")
@@ -18,5 +18,8 @@ export const config = {
     interstitialId: production
       ? requiredProductionId("EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID")
       : TestIds.INTERSTITIAL,
+    rewardedId: production
+      ? requiredProductionId("EXPO_PUBLIC_ADMOB_REWARDED_ID")
+      : TestIds.REWARDED,
   },
 };
