@@ -185,6 +185,7 @@ const s = StyleSheet.create({
   },
   copy: {
     color: theme.colors.muted,
+    fontFamily: theme.fonts.regular,
     fontSize: 13,
     lineHeight: 20,
     textAlign: "center",

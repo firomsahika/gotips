@@ -10,7 +10,12 @@ import { fail } from "./utils/http.js";
 const app = express();
 
 
-app.use(cors({ origin: process.env.CORS_ORIGIN?.split(",") ?? true }));
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  }),
+);
 app.use(express.json({ limit: "100kb" }));
 app.use(express.static("public"));
 

@@ -113,6 +113,7 @@ const s = StyleSheet.create({
   subtitle: {
     fontSize: 13,
     lineHeight: 19,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.muted,
     marginTop: 4,
   },
@@ -135,6 +136,7 @@ const s = StyleSheet.create({
   },
   emptyText: {
     fontSize: 13,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.muted,
     textAlign: "center",
     marginTop: 6,

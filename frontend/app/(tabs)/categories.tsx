@@ -159,6 +159,7 @@ const s = StyleSheet.create({
   desc: {
     fontSize: 12,
     lineHeight: 17,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.muted,
     marginTop: 4,
   },

@@ -296,6 +296,7 @@ const s = StyleSheet.create({
   tierDesc: {
     fontSize: 11,
     lineHeight: 16,
+    fontFamily: theme.fonts.regular,
     color: "#B45309",
     marginTop: 2,
   },
@@ -345,7 +346,7 @@ const s = StyleSheet.create({
   },
   rowCopy: { flex: 1 },
   rowTitle: { color: theme.colors.ink, fontFamily: theme.fonts.semiBold, fontSize: 14 },
-  rowDesc: { color: theme.colors.muted, fontSize: 11, marginTop: 2 },
+  rowDesc: { color: theme.colors.muted, fontFamily: theme.fonts.regular, fontSize: 11, marginTop: 2 },
   version: {
     textAlign: "center",
     color: theme.colors.muted,

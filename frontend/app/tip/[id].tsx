@@ -679,6 +679,7 @@ const s = StyleSheet.create({
   proStrategy: {
     fontSize: 13,
     lineHeight: 20,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.inkLight,
   },
   checklistHeading: {
@@ -695,6 +696,7 @@ const s = StyleSheet.create({
   },
   checklistText: {
     fontSize: 12,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.inkLight,
   },
   source: {
@@ -719,7 +721,7 @@ const s = StyleSheet.create({
   },
   sourceCopy: { flex: 1 },
   sourceTitle: { fontFamily: theme.fonts.bold, color: theme.colors.ink, fontSize: 13 },
-  sourceText: { fontSize: 11, color: theme.colors.muted, marginTop: 2 },
+  sourceText: { fontSize: 11, fontFamily: theme.fonts.regular, color: theme.colors.muted, marginTop: 2 },
   reactionCard: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,

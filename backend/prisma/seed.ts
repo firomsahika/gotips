@@ -12,31 +12,31 @@ const categories = [
     name: "Artificial intelligence",
     slug: "ai",
     description: "Practical AI for everyday work.",
-    icon: "✦",
+    icon: "🤖",
   },
   {
     name: "Productivity",
     slug: "productivity",
     description: "Make focused progress each day.",
-    icon: "✓",
+    icon: "⚡",
   },
   {
     name: "Career",
     slug: "career",
     description: "Build skills that move you forward.",
-    icon: "↗",
+    icon: "🎯",
   },
   {
     name: "Business",
     slug: "business",
     description: "Clear ideas for growing ventures.",
-    icon: "▣",
+    icon: "💼",
   },
   {
     name: "Money",
     slug: "money",
     description: "Better habits around personal finance.",
-    icon: "◈",
+    icon: "💰",
   },
 ];
 const seed = async () => {

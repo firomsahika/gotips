@@ -58,6 +58,11 @@ export const theme = {
     medium: "Poppins_500Medium",
     semiBold: "Poppins_600SemiBold",
     bold: "Poppins_700Bold",
+    // PostScript names for iOS native fallback
+    iosRegular: "Poppins-Regular",
+    iosMedium: "Poppins-Medium",
+    iosSemiBold: "Poppins-SemiBold",
+    iosBold: "Poppins-Bold",
   },
   radius: { xs: 8, sm: 12, md: 18, lg: 24, xl: 30, full: 999 },
   space: (n: number) => n * 8,

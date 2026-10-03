@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
   },
   sub: {
     fontSize: 11,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.muted,
     marginTop: 2,
   },

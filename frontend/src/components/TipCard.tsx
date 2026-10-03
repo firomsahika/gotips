@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
   excerpt: {
     fontSize: 12,
     lineHeight: 18,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.muted,
     marginTop: 5,
   },
